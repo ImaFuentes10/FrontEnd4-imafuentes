@@ -20,10 +20,12 @@ const eliminarProducto = (producto) => {
 
 //función para mostrar la lista
 const mostrarLista = () => {
-    console.log(`\nLista de compras:\n`)
-    for (let producto of productos){//for of para imprimir cada elemento del set
-        console.log(`${producto}`);
-    }
+    console.log(`\nLista de compras:\n`)  
+    //for of para imprimir cada elemento del set
+    for (let producto of productos){
+        console.log(`${producto}`)
+    };
+    //productos.forEach(producto => console.log(producto));//también posible con forEach()
     //console.log(listaDeCompras);//si se imprime así sale; [ Set(n) {  } ]
 }
 
