@@ -43,7 +43,7 @@ for (let numero of numeros){
 
 
 //forEach()
-//arreglo.forEach(fucntion(elemento, indice, arreglo){ });
+//arreglo.forEach(function(elemento, indice, arreglo){ });
 //trabajaremos con el mismo arreglo que usamos para for of
 //function(numero) = el argumento de la función se llamará 'numero' y será cada elemento del arreglo
 numeros.forEach(function(numero){
