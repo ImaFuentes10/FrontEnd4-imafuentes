@@ -23,7 +23,7 @@ const mostrarLista = () => {
     console.log(`\nLista de compras:\n`)  
     //for of para imprimir cada elemento del set
     for (let producto of productos){
-        console.log(`${producto}`)
+        console.log(`- ${producto}\n`)
     };
     //productos.forEach(producto => console.log(producto));//también posible con forEach()
     //console.log(listaDeCompras);//si se imprime así sale; [ Set(n) {  } ]
