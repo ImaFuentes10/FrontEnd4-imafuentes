@@ -26,8 +26,17 @@ console.log(contarPalabras(mensajes)); // → 9
 
 
 /* Implementar versión recursiva */
+function contarPalabrasRec (mensajes, item = 0) {
+    let total = 0;
+    
+    if (item < mensajes.length){
+        const palabras = mensajes[item].split(" ").length;
+        total = palabras + contarPalabrasRec(mensajes, item = item + 1);
+    }
+   return total
+}
 
-
+console.log(contarPalabrasRec(mensajes));
 
 /* EJERCICIO 2 */
 
@@ -39,15 +48,27 @@ Una aplicación muestra un historial de navegación como una pila (stack), y qui
 
 // Versión RECURSIVA ya implementada
 function invertirHistorial(historial) {
+    
     if (historial.length === 0) return [];
-    const ultimo = historial.pop();
-    return invertirHistorial(historial).concat(ultimo);
+
+    const primero = historial.shift();
+
+    return invertirHistorial(historial).concat(primero)
 }
 
-const historial = ["Página A", "Página B", "Página C"];
-console.log(invertirHistorial(historial)); // → ["Página C", "Página B", "Página A"]
+const historial = ["Página A", "Página B", "Página C", "Página D"];
+//console.log(invertirHistorial(historial)); // → ["Página C", "Página B", "Página A"]
 
 /* Implementar versión iterativa */
 function invertirHistorialI(historial) {
-    
+
+    for (i = 1; i < historial.length; i++){
+
+        let item = historial[i];
+        historial.splice(i, 1)
+        historial.unshift(item);
+
+    }return historial
 }
+//invertirHistorialI(historial);
+console.log(invertirHistorialI(historial));
