@@ -46,7 +46,7 @@ const persona = {
     name: "GHJGJ",
     edad: 15
 }
-console.log(persona)
+//console.log(persona)
 
 const obj = {
     ...persona,
@@ -129,7 +129,7 @@ console.log(maxSubarraySum(arraySum, 2));
 
 
 //sliding window variable
-function lengthOfLogest(str) {
+function lengthOfLongest(str) {
     let seen = new Set(); //usamos set para evitar repeticiones pero sobre todo para usar sus métodos y por su eficiencia
     let left = 0; maxLength = 0; 
     
@@ -146,4 +146,54 @@ function lengthOfLogest(str) {
 
 const longStr = "abdhbakshdkhiuhhsjkdehfooadsfñ";
 
-console.log(lengthOfLogest(longStr));
+console.log(lengthOfLongest(longStr));
+
+
+/* Implementación con Array */
+function lengthOfLongestArr(str) {
+    let seen = []; // Usamos array en lugar de Set
+    let left = 0, maxLength = 0;
+
+    for (let right = 0; right < str.length; right++) {
+        const currentChar = str[right];
+
+        // Si ya está en el array, removemos caracteres desde left
+        while (seen.includes(currentChar)) {
+            seen.shift(); // eliminamos el primero
+            left++;       // movemos la ventana a la derecha
+        }
+
+        seen.push(currentChar); // agregamos el nuevo carácter
+        maxLength = Math.max(maxLength, seen.length);
+    }
+
+    return maxLength;
+}
+
+/* Creamos un array enorme */
+let bigArray = Array.from({ length: 10000 }, () => Math.floor(Math.random() * 10000));
+
+/* Probamos la implementación con Array */
+console.time("Implementacion Array")
+console.log(lengthOfLongestArr(bigArray))
+console.timeEnd("Implementacion Array")
+//Promedio (5): 12.1138ms
+
+/* Probamos la implementación con Set */
+console.time("Implementacion Set")
+console.log(lengthOfLongest(bigArray))
+console.timeEnd("Implementacion Set")
+//Promedio (5): 4.136ms !*!*
+
+
+/* Probamos la implementación Merge Sort*/
+console.time("Implementacion Merge Sort")
+console.log(mergeSort(bigArray))
+console.timeEnd("Implementacion Merge Sort")
+//Promedio (5): 13.7778ms
+
+/* Probamos la implementación Nativa Sort */
+console.time("Implementacion Nativa Sort")
+console.log(bigArray.sort(compareNumbers))
+console.timeEnd("Implementacion Nativa Sort")
+//Promedio (5): 3.4042ms !*!*
