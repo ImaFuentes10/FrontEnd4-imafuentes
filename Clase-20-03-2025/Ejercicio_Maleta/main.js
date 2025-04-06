@@ -13,6 +13,8 @@ function agregarItem() {
     maleta.push(item);
 
     actualizarMaleta();
+
+    limpiarCampos();
     // 🚀 Completar: Obtener el valor del input y validar que no esté vacío ni duplicado.
     // 🚀 Completar: Agregar el artículo al array maleta y actualizar la lista.
 }
@@ -34,7 +36,7 @@ function finalizarEmpaque() {
     for (let i = maleta.length - 1; i >= 0; i--){
         maleta.pop();
     }
-    
+
     actualizarMaleta();
     // 🚀 Completar: Mostrar alerta si hay menos de 3 artículos, de lo contrario, mensaje de éxito.
 }
@@ -54,4 +56,9 @@ function eliminarArticulo (index) {
 
     maleta.splice(index, 1);
     actualizarMaleta()
+}
+
+//Función para limpiar campos
+function limpiarCampos (){
+    document.getElementById("item").value = "";
 }
