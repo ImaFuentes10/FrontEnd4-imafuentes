@@ -13,5 +13,20 @@ li {
     padding: 10px;
     background: #f1f1f1;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+}
+
+#index{
+    position: absolute;
+    left: 1.5rem;
+    font-weight: bold;
+}
+
+#eliminar-juego{
+    position: absolute;
+    right: 1.5rem;
+    font-weight: bold;
+    border: solid black 0.2rem;
+    border-radius: 0.3rem; 
 }
