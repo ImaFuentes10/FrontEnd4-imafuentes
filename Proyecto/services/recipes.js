@@ -1,7 +1,7 @@
 export const getRecipes = () => [
     {
         nombre: "Ensalada César",
-        ingredientes: ["lechuga", "pollo", "queso", "pan"],
+        ingredientes: ["lechuga", "pollo", "queso", "pan", "a1", "a2", "a3", "b1", "b2", "b3"],
         pasos: "Mezcla los ingredientes y añade aderezo.",
         categoria: "Comida",
         tiempo: 15,

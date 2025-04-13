@@ -128,6 +128,17 @@ aside {
     border-radius: 8px;
 }
 
+.ingredient-suggestion{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin: 0.3rem 0;
+    font-style: italic;
+    background-color: var(--warm-gray);
+    padding: 0.5rem 1rem 0.6rem 1rem;
+    border-radius: 0.5rem;
+}
+
 footer {
     margin-top: 2rem;
     text-align: center;

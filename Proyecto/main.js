@@ -9,11 +9,13 @@ const input = document.getElementById("ingredient-input");
 const recipesContainer = document.getElementById("recipes");
 const sortSelect = document.getElementById("sort");
 const suggestionBtn = document.getElementById("suggestion-btn");
+const suggestionContainer = document.getElementById("recent-suggestions");
 
 // Variables globales para autocompletado y análisis
 let currentSuggestionIndex = -1;
 let currentSuggestions = [];
 let historialIngredientes = [];
+let recentSuggestions = [];
 
 
 // =============================================
@@ -53,7 +55,27 @@ function filtrarPorIngrediente(ingrediente) {
 // FUNCIÓN: Actualizar historial y análisis
 // =============================================
 function actualizarHistorial(ingrediente) {
-    historialIngredientes.push(ingrediente);
+    /*CAMBIO: Noté que al meter un ingrediente usado previamente, si el arreglo era mayor a 5,
+    no se actualizaba al lugar más receinte del set de sugerencias recientes, porque el set
+    lo coloca en el primer espacio donde aparece en el array. 
+    Realicé un arreglo de dos punteros para eliminar repetidos y así siempre aparece el más reciente
+    */ 
+    if(historialIngredientes.includes(ingrediente)) { 
+        let left = 0;
+        let right = historialIngredientes.length - 1;
+
+        while(left <= right){
+            if (historialIngredientes[left] === ingrediente) historialIngredientes.splice([left], 1)
+            if (historialIngredientes[right] === ingrediente) historialIngredientes.splice([right], 1);
+            else{
+                right --
+                left ++;
+            }
+        }
+        historialIngredientes.push(ingrediente);
+    }else{
+        historialIngredientes.push(ingrediente);
+    }
 
     // Sliding Window: mantenemos máximo 20 ingredientes
     if (historialIngredientes.length > 20) {
@@ -63,8 +85,8 @@ function actualizarHistorial(ingrediente) {
     // Mostrar en texto cuántos ingredientes únicos se han usado
     document.getElementById("analysis").textContent =
         `Usaste ${new Set(historialIngredientes).size} ingrediente${historialIngredientes.length > 1 ? 's' : ''} esta semana.`;
-
-    actualizarSugerenciasRecientes();
+    
+    actualizarSugerenciasRecientes(new Set (historialIngredientes));
 }
 
 
@@ -72,11 +94,28 @@ function actualizarHistorial(ingrediente) {
 // FUNCIÓN: Mostrar top ingredientes populares recientes (Sliding Window real)
 // =============================================
 
-// TODO: Sliding Window sobre últimas 5 búsquedas para encontrar ingredientes más frecuentes
-function actualizarSugerenciasRecientes() {
+// COMPLETADO: Sliding Window sobre últimas 5 búsquedas para encontrar ingredientes más frecuentes
+function actualizarSugerenciasRecientes(historial) {
+    let _right = historial.size;
+    let _left = _right - 5;
 
+    if(historial.size === 0) _right = 0;
+    if(historial.size < 5) _left = 0;
+
+    recentSuggestions = [...historial].slice(_left,_right);
+
+    //Limpiamos sugerencias recientes
+    while (suggestionContainer.firstChild) suggestionContainer.removeChild(suggestionContainer.firstChild);
+
+    //Pasamos sugerencias recientes al DOM
+    recentSuggestions.forEach((sug)=> { 
+        const item = document.createElement("div");
+        item.textContent = sug;
+        item.classList.add("flex-container");
+        item.classList.add("ingredient-suggestion");
+        suggestionContainer.appendChild(item);
+    });
 }
-
 
 
 // =============================================
@@ -90,7 +129,7 @@ function autocompletar(valor) {
 
     currentSuggestions = [...new Set(recetas.flatMap(r => r.ingredientes))]
         .filter((ing) => ing.toLowerCase().startsWith(valor.toLowerCase()))
-        .slice(0, 5);
+        .slice(0,5);
 
     currentSuggestionIndex = -1;
 
