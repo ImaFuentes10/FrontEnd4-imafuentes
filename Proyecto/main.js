@@ -16,7 +16,7 @@ let currentSuggestionIndex = -1;
 let currentSuggestions = [];
 let historialIngredientes = [];
 let recentSuggestions = [];
-
+let ordenadas = [];
 
 // =============================================
 // FUNCIÓN: Mostrar recetas en pantalla
@@ -163,19 +163,47 @@ function buscarYRenderizar() {
 // FUNCIÓN: Ordenar recetas por nombre o tiempo
 // =============================================
 function ordenarRecetas(tipo) {
-    let ordenadas = [...recetas];
+    ordenadas = [...recetas];
 
     if (tipo === "time") {
-        // TODO: Reemplazar .sort() por una implementación manual de Merge Sort (crear función mergeSort())
-        ordenadas.sort((a, b) => a.tiempo - b.tiempo);
+        // COMPLETO: Reemplazar .sort() por una implementación manual de Merge Sort (crear función mergeSort())
+        //ordenadas.sort((a, b) => a.tiempo - b.tiempo);
+        ordenadas = mergeSort(ordenadas, "tiempo");
     } else {
-        // TODO: Reemplazar .sort() por una implementación manual de ordenamiento alfabético (merge sort)
-        ordenadas.sort((a, b) => a.nombre.localeCompare(b.nombre));
+        // COMPLETO: Reemplazar .sort() por una implementación manual de ordenamiento alfabético (merge sort)
+        //ordenadas.sort((a, b) => a.nombre.localeCompare(b.nombre));
+        ordenadas = mergeSort(ordenadas,"nombre")
     }
-
+    
     renderRecetas(ordenadas);
 }
 
+function mergeSort (ordenadas, prop) {
+    if (ordenadas.length <= 1) return ordenadas;
+
+    const mid = Math.floor(ordenadas.length / 2);
+    const _left = mergeSort(ordenadas.slice(0, mid), prop);
+    const _right = mergeSort(ordenadas.slice(mid), prop);
+    
+    return merge(_left, _right, prop);
+}
+
+
+function merge (_left, _right, prop) {
+    let ordenadas = [];
+    let i = 0; 
+    let j = 0;
+
+    while(i < _left.length && j < _right.length){
+        if(_left[i][prop] < _right[j][prop]){
+            ordenadas.push(_left[i++]);
+        }else{ 
+            ordenadas.push(_right[j++]);
+        }
+    }
+    
+    return ordenadas = [...ordenadas, ..._left.slice(i), ..._right.slice(j)];
+}
 
 // =============================================
 // FUNCIÓN: Resaltar sugerencia seleccionada
@@ -238,8 +266,19 @@ sortSelect.addEventListener("change", (e) => ordenarRecetas(e.target.value));
 // EVENTO: Mostrar la receta más rápida
 // =============================================
 suggestionBtn.addEventListener("click", () => {
-    // TODO: Reemplazar .reduce() con una implementación manual de Greedy para encontrar el menor tiempo
-    const recetaMasRapida = recetas.reduce((a, b) => a.tiempo < b.tiempo ? a : b);
+    // COMPLETO: Reemplazar .reduce() con una implementación manual de Greedy para encontrar el menor tiempo
+    //const recetaMasRapida = recetas.reduce((a, b) => a.tiempo < b.tiempo ? a : b);
+
+    let menorTiempo = 0;
+    let recetaMasRapida;
+    
+    for(let receta of recetas){
+        if (receta.tiempo < menorTiempo || menorTiempo === 0) {
+            recetaMasRapida = receta;
+            menorTiempo = receta.tiempo;    
+        } 
+    }
+    
     renderRecetas([recetaMasRapida]);
 });
 
