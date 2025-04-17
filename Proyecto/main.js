@@ -43,12 +43,42 @@ function renderRecetas(lista) {
 // =============================================
 function filtrarPorIngrediente(ingrediente) {
     const lower = ingrediente.toLowerCase();
-
-    // TODO: Reemplazar .includes() con implementación manual de búsqueda de subcadenas (como KMP o recorrido carácter por carácter)
-    return recetas.filter((receta) =>
+    
+    // COMPLETO: Reemplazar .includes() con implementación manual de búsqueda de subcadenas (como KMP o recorrido carácter por carácter)
+    /*return recetas.filter((receta) =>
         receta.ingredientes.some((ing) => ing.toLowerCase().includes(lower))
-    );
-}
+    );*/
+    const res = [];
+    const m = lower.length;
+
+    const targetHash = [...lower].reduce((accum, char) => accum + char.charCodeAt(0), 0);
+
+    //Recorrido DFS de ingredientes para cada receta
+    for (let receta of recetas){
+
+        for (let ing of receta.ingredientes) {
+
+        let currentHash = [...ing.slice(0, m)].reduce((accum, char) => accum + char.charCodeAt(0), 0);
+
+            for (let i = 0; i <= ing.length - m; i++) {
+                const window = ing.slice(i, i + m);
+        
+                if (currentHash === targetHash) {
+
+                    if (window === lower) res.push(receta);
+                }
+
+                if (i < ing.length - m) {
+                    currentHash =
+                        currentHash - ing.charCodeAt(i) + ing.charCodeAt(i + m);
+                }
+            }
+        }
+    }
+    
+    return res;
+};
+
 
 
 // =============================================
