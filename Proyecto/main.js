@@ -17,6 +17,7 @@ let currentSuggestions = [];
 let historialIngredientes = [];
 let recentSuggestions = [];
 let ordenadas = [];
+const ingredienteInput = [];
 
 // =============================================
 // FUNCIÓN: Mostrar recetas en pantalla
@@ -49,6 +50,7 @@ function filtrarPorIngrediente(ingrediente) {
         receta.ingredientes.some((ing) => ing.toLowerCase().includes(lower))
     );*/
     const res = [];
+    
     const m = lower.length;
 
     const targetHash = [...lower].reduce((accum, char) => accum + char.charCodeAt(0), 0);
@@ -65,7 +67,10 @@ function filtrarPorIngrediente(ingrediente) {
         
                 if (currentHash === targetHash) {
 
-                    if (window === lower) res.push(receta);
+                    if (window === lower) {
+                        res.push(receta);
+                        ingredienteInput.push(ing);
+                    } 
                 }
 
                 if (i < ing.length - m) {
@@ -184,7 +189,11 @@ function buscarYRenderizar() {
     if (!valor) return;
 
     const resultados = filtrarPorIngrediente(valor);
-    actualizarHistorial(valor);
+    console.log(ingredienteInput);
+    
+    //reviso que se haya ingresado el ingrediente completo y lo añado al historial, sino no se agrega
+    if (ingredienteInput.includes(valor.toLowerCase())) actualizarHistorial(valor);
+    
     renderRecetas(resultados);
 }
 
