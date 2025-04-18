@@ -305,13 +305,14 @@ input.addEventListener("keydown", (e) => {
 sortSelect.addEventListener("change", (e) => ordenarRecetas(e.target.value));
 
 
+
 // =============================================
 // EVENTO: Mostrar la receta más rápida
 // =============================================
 suggestionBtn.addEventListener("click", () => {
     // COMPLETO: Reemplazar .reduce() con una implementación manual de Greedy para encontrar el menor tiempo
     //const recetaMasRapida = recetas.reduce((a, b) => a.tiempo < b.tiempo ? a : b);
-
+    /* ALGORITMO GREEDY
     let menorTiempo = 0;
     let recetaMasRapida;
     
@@ -321,9 +322,52 @@ suggestionBtn.addEventListener("click", () => {
             menorTiempo = receta.tiempo;    
         } 
     }
-    
+        
     renderRecetas([recetaMasRapida]);
+    */
+
+    //llamada a algoritmo de sugerencia inteligente
+    renderRecetas([sugerenciaInteligente(recetas)]);
 });
+
+
+//FUNCION: Calcular score de cada receta para sugerencia inteligente
+//Toma en cuenta tiempo, ingredientes utilizados recientemente que contenga la receta
+function calcularScore (receta) {
+
+    const ajuste = 20 - historialIngredientes.length;
+    const tiempoMaximo = 120;
+    const pesoTiempo = 1.5;
+
+    let ingIncluded = 0;
+    let scoreIngredientes = 0;
+
+    for (let ing of receta.ingredientes) {
+        if (historialIngredientes.includes(ing)) {
+            ingIncluded ++;
+            scoreIngredientes = scoreIngredientes + 
+                (historialIngredientes.indexOf(ing) + ajuste + 1)
+    }}
+
+    const scoreTiempo = Math.max(0, tiempoMaximo - receta.tiempo);
+
+    console.log((scoreIngredientes * ingIncluded) +  (scoreTiempo * pesoTiempo));
+    
+    return (scoreIngredientes * ingIncluded) + (scoreTiempo * pesoTiempo);
+}
+
+
+//FUNCION: Ordenamiento por score para sugerir receta con mayor score
+function sugerenciaInteligente (recetas) {
+    const sugerencia = recetas
+    .map(receta => ({
+        ...receta,
+        score: calcularScore(receta)
+    }))
+    .sort((a,b) => b.score - a.score);
+    
+    return sugerencia[0];
+}
 
 
 // =============================================
