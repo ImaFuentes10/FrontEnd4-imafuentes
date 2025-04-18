@@ -17,7 +17,7 @@ let currentSuggestions = [];
 let historialIngredientes = [];
 let recentSuggestions = [];
 let ordenadas = [];
-const ingredienteInput = [];
+let ingredienteInput = [];
 
 // =============================================
 // FUNCIÓN: Mostrar recetas en pantalla
@@ -44,12 +44,12 @@ function renderRecetas(lista) {
 // =============================================
 function filtrarPorIngrediente(ingrediente) {
     const lower = ingrediente.toLowerCase();
-    
+    ingredienteInput = new Set;
     // COMPLETO: Reemplazar .includes() con implementación manual de búsqueda de subcadenas (como KMP o recorrido carácter por carácter)
     /*return recetas.filter((receta) =>
         receta.ingredientes.some((ing) => ing.toLowerCase().includes(lower))
     );*/
-    const res = [];
+    const res = new Set();
     
     const m = lower.length;
 
@@ -68,8 +68,8 @@ function filtrarPorIngrediente(ingrediente) {
                 if (currentHash === targetHash) {
 
                     if (window === lower) {
-                        res.push(receta);
-                        ingredienteInput.push(ing);
+                        res.add(receta);
+                        ingredienteInput.add(ing);
                     } 
                 }
 
@@ -80,7 +80,7 @@ function filtrarPorIngrediente(ingrediente) {
             }
         }
     }
-    
+
     return res;
 };
 
@@ -158,9 +158,14 @@ function actualizarSugerenciasRecientes(historial) {
 // =============================================
 function autocompletar(valor) {
     const autocompletarDiv = document.getElementById("autocomplete-list");
+    autocompletarDiv.classList.remove('hidden');
     autocompletarDiv.innerHTML = "";
-
-    if (!valor) return;
+    
+    if (!valor){
+        autocompletarDiv.classList.add('hidden')
+    return;
+} 
+    
 
     currentSuggestions = [...new Set(recetas.flatMap(r => r.ingredientes))]
         .filter((ing) => ing.toLowerCase().startsWith(valor.toLowerCase()))
@@ -189,10 +194,9 @@ function buscarYRenderizar() {
     if (!valor) return;
 
     const resultados = filtrarPorIngrediente(valor);
-    console.log(ingredienteInput);
     
     //reviso que se haya ingresado el ingrediente completo y lo añado al historial, sino no se agrega
-    if (ingredienteInput.includes(valor.toLowerCase())) actualizarHistorial(valor);
+    if (ingredienteInput.has(valor.toLowerCase())) actualizarHistorial(valor);
     
     renderRecetas(resultados);
 }

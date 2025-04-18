@@ -47,6 +47,9 @@ header h1 {
     padding-left: 8px;
 }
 
+.hidden {
+    visibility: hidden;
+}
 
 #autocomplete-list {
     width: 80%;

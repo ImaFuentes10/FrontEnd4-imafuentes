@@ -25,7 +25,7 @@ export const getRecipes = () => [
     },
     {
         nombre: "Smoothie de plátano",
-        ingredientes: ["plátano", "leche", "miel", "hielo"],
+        ingredientes: ["plátano", "leche", "miel", "hielo", "lechera"],
         pasos: "Licúa todos los ingredientes hasta obtener una mezcla homogénea.",
         categoria: "Bebida",
         tiempo: 5,
