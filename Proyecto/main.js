@@ -347,7 +347,8 @@ function calcularScore (receta) {
             ingIncluded ++;
             scoreIngredientes = scoreIngredientes + 
                 (historialIngredientes.indexOf(ing) + ajuste + 1)
-    }}
+        }
+    }
 
     const scoreTiempo = Math.max(0, tiempoMaximo - receta.tiempo);
 
